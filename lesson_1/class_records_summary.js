@@ -5,42 +5,30 @@ function generateClassRecordSummary(scores) {
   const Exam2 = [];
   const Exam3 = [];
   const Exam4 = [];
-
+  const Exams = [];
   const StudentGrades = [];
 
-  const Exams = [];
-
-  let examScores;
-  let exerciseScores;
-  let avgExamScore;
-  let exerciseScore;
-  let numericGrade;
-  let alphaGrade;
-
   for (let student in scores) {
-    examScores = scores[student]['scores']['exams'];
-    exerciseScores = scores[student]['scores']['exercises'];
+    let examScores = scores[student]['scores']['exams'];
+    let exerciseScores = scores[student]['scores']['exercises'];
 
-    avgExamScore = averageExamScore(examScores);
-    exerciseScore = exerciseScoresTotal(exerciseScores);
+    let avgExamScore = averageExamScore(examScores);
+    let exerciseScore = exerciseScoresTotal(exerciseScores);
 
-    numericGrade = numericalGrade(avgExamScore, exerciseScore);
-    alphaGrade = letterGrade(numericGrade);
+    let numericGrade = numericalGrade(avgExamScore, exerciseScore);
+    let alphaGrade = letterGrade(numericGrade);
 
     StudentGrades.push(`${numericGrade} (${alphaGrade})`);
 
-    Exam1.push(examScores[0]);
-    Exam2.push(examScores[1]);
-    Exam3.push(examScores[2]);
-    Exam4.push(examScores[3]);
+    collectExamData(Exam1, Exam2, Exam3, Exam4, examScores);
   }
 
-  [Exam1, Exam2, Exam3, Exam4].forEach(exam => Exams.push(examStats(exam)));
+  generateExamStatistics(Exam1, Exam2, Exam3, Exam4, Exams);
 
   return {
     studentGrades: StudentGrades,
     exams: Exams,
-  }
+  };
 }
 
 function averageExamScore(scores) {
@@ -70,10 +58,17 @@ function letterGrade(numericalGrade) {
   } else if (numericalGrade >= 69) {
     return 'D';
   } else if (numericalGrade >= 60) {
-    return 'E'
+    return 'E';
   } else {
     return 'F';
   }
+}
+
+function collectExamData(exam1, exam2, exam3, exam4, examScores) {
+  exam1.push(examScores[0]);
+  exam2.push(examScores[1]);
+  exam3.push(examScores[2]);
+  exam4.push(examScores[3]);
 }
 
 function examStats(exam) {
@@ -84,6 +79,10 @@ function examStats(exam) {
   stats['maximum'] = Math.max(...exam);
 
   return stats;
+}
+
+function generateExamStatistics(exam1, exam2, exam3, exam4, combined) {
+  [exam1, exam2, exam3, exam4].forEach(exam => combined.push(examStats(exam)));
 }
 
 let studentScores = {
