@@ -14,7 +14,7 @@
 
 * ...
 
-**Requirements/Rules:**
+**Definitions/Rules (explicit and implicit):**
 
 * ...
 
