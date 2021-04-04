@@ -10,7 +10,7 @@
 
 ### Problem
 
-**Instructions:**
+**Description:**
 
 * ...
 
